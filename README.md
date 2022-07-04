@@ -1,2 +1,2 @@
 # API
-To-do-list app API
+Blog app API
