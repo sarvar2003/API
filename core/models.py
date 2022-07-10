@@ -1,5 +1,7 @@
+from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -38,4 +40,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     
 
+class Task(models.Model):
+    """Task model"""
+    title = models.CharField(max_length=255, blank=True)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    task = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True, editable=False)
+
+    def __str__(self):
+       return self.title 
 

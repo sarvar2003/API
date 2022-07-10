@@ -1,5 +1,13 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from core import models
+
+
+def sample_user(email='test@gmail.com', password="Testpass"):
+    """Create a sample user for testing"""
+    return get_user_model().objects.create_user(email, password)
+
+
 
 class ModelTests(TestCase):
     """Tests for models"""
@@ -37,3 +45,16 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_superuser)
+    
+    def test_task_str(self):
+        """Test string representation of task"""
+        task = models.Task.objects.create(
+            author = sample_user(),
+            title = 'Morning chores',
+            task = 'Wake up 7 a.m'
+        )
+
+        self.assertEqual(str(task), task.title)
+
+
+        
