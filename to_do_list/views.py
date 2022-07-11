@@ -14,6 +14,10 @@ class TaskListViewset(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = Task.objects.all()
     serializer_class = serializers.TaskSerializer
 
-    def get_queryset(self):
-        return self.queryset.filter(author=self.request.user)
+    # def get_queryset(self):
+    #     return self.queryset.filter(author=self.request.user).order_by('-id')
+
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
+    
     

@@ -5,9 +5,23 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Task
-from to_do_list.serializers import TaskSerializer
+from to_do_list.serializers import TaskSerializer, TaskDetailSerializer
 
 TASK_URL = reverse('to_do_list:task-list')
+
+def sample_task(user, **params):
+    defaults = {
+        'author' : user,
+        'title ' :'Morning rituals',
+        'task' : 'Wake up 9.30 a.m',
+    }
+    defaults.update(params)
+
+    return Task.objects.create(author=user, **defaults)
+
+def detail_url(recipe_id):
+    """Return recipe detail URL"""
+    return reverse('recipe:recipe-detail', args=[recipe_id])
 
 
 class PublicTaskApi(TestCase):
@@ -47,7 +61,7 @@ class PrivateTaskTests(TestCase):
             task = 'Wake up 9.30 a.m',
         )
         
-        tasks = Task.objects.all()
+        tasks = Task.objects.all().filter()
         res = self.client.get(TASK_URL)
         serializer = TaskSerializer(tasks, many=True)
 
@@ -75,6 +89,12 @@ class PrivateTaskTests(TestCase):
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['title'], task.title)
 
-    
+    def test_task_detail(self):
+        """Test task detail"""
+        task = sample_task(user=self.user)
+        url = detail_url(task.id)
+        res = self.client.get(url)
+        serializer = TaskDetailSerializer(task)
 
-    
+        self.assertEqual(res.data, serializer.data)
+

@@ -4,7 +4,7 @@ from django.urls import path, include
 from . import views
 
 router = DefaultRouter()
-router.register('tasks', views.TaskListViewset)
+router.register('', views.TaskListViewset)
 
 app_name = 'to_do_list'
 
