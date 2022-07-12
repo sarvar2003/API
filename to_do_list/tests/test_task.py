@@ -9,19 +9,10 @@ from to_do_list.serializers import TaskSerializer, TaskDetailSerializer
 
 TASK_URL = reverse('to_do_list:task-list')
 
-def sample_task(user, **params):
-    defaults = {
-        'author' : user,
-        'title ' :'Morning rituals',
-        'task' : 'Wake up 9.30 a.m',
-    }
-    defaults.update(params)
 
-    return Task.objects.create(author=user, **defaults)
-
-def detail_url(recipe_id):
-    """Return recipe detail URL"""
-    return reverse('recipe:recipe-detail', args=[recipe_id])
+def detail_url(task_id):
+    """Return task detail URL"""
+    return reverse('to_do_list:task-detail', args=[task_id])
 
 
 class PublicTaskApi(TestCase):
@@ -74,7 +65,8 @@ class PrivateTaskTests(TestCase):
             'other@gmail.com',
             'testpass098'
         )
-        Task.objects.create( author = user2,
+        Task.objects.create( 
+            author = user2,
             title = 'Morning rituals',
             task = 'Wake up 9.30 a.m')
         task = Task.objects.create(
@@ -91,7 +83,12 @@ class PrivateTaskTests(TestCase):
 
     def test_task_detail(self):
         """Test task detail"""
-        task = sample_task(user=self.user)
+        task = Task.objects.create(
+            author = self.user,
+            title = 'Morning chores',
+            task = 'Wake up 7 a.m'
+        )
+
         url = detail_url(task.id)
         res = self.client.get(url)
         serializer = TaskDetailSerializer(task)

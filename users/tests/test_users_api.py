@@ -59,16 +59,6 @@ class PublicUserApiTests(TestCase):
         ).exists()
         self.assertFalse(user_exists)
 
-    # def test_create_token_for_user(self):
-    #     """Test that token is created for a user"""
-    #     payload = { 'email': 'tes@gmail.com', 'password': 'secret1234'}
-    #     create_user(**payload)
-        
-    #     res = self.client.post(TOKEN_URL, payload)
-        
-    #     self.assertIn('token', res.data)
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-
     def test_create_token_invalid_credentials(self):
         """Test that tokenis not created if invalid credetials are given"""
         create_user(email='test@email.com', password='secret123')

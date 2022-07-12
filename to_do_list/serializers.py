@@ -8,7 +8,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Task
-        fields = ('id', 'title', 'task', 'date_created' )
+        fields = ('id', 'title', 'task', 'date_created')
         read_only_fields = ('id', 'date_created')
 
 class TaskDetailSerializer(TaskSerializer):

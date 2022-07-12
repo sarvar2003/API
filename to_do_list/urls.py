@@ -5,6 +5,7 @@ from . import views
 
 router = DefaultRouter()
 router.register('', views.TaskListViewset)
+router.register('', views.TaskDetailViewSet)
 
 app_name = 'to_do_list'
 
